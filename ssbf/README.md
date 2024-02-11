@@ -4,11 +4,13 @@ by Patrizia Favaron.
 
 ## Core motivation
 
-Three-dimensional anemometers can easily provide fast-sampling (10Hz+), accurate and high-resolution (1cm/s, 0.01°C) wind and temperature data whose processing (for example using _eddy covariance_ and Monin-Obukhov similarity theory) can provide both high-resolution mean wind and mean temperature information, along with turbulence indicators like friction velocity, turbulent sensible heat flux or Obukhov length.
+Three-dimensional anemometers can produce large data sets whose permanent archiving is of ancillary, yet paramount, importance in view of dissemination, processing and unanticipated uses.
 
-These data may in turn be used as a basis for quantifying or predicting the "dispersivity" of lower atmosphere (the "Planetary Boundary Layer"), that is, the tendency of air in contact or close to the Earth surface to dilute and transport trace gases (e.g. human-generated pollutants) and particulates (PM-x, pollens, spores, tiny animals).
+The most likely use of data by the micro-meteorological community will be accessing data as raw time series, using programming languages including Fortran, whose standard library contains no facility for accessing databases and other IT-bound technologies.
 
-However, ultrasonic anemometer data files tend to be much larger than their electro-mechanical anemometer counterparts: the necessity then arises to deal with massive data sets efficiently (a measurement campaign may produce many gigabytes of raw data).
+For this reason, a sensible archival form should be the simple and "universal", that is, accessible by any language able to get a binary stream of data.
+
+In addition, the reading of data should be reasonably fast.
 
 ## Relevant acronyms and terminology
 
