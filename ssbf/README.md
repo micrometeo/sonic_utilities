@@ -1,4 +1,4 @@
-# ssbf-lib: An open-source file format and Fortran library for storing and using raw ultrasonic anemometer data
+# ssbf: An open-source file format and Fortran library for storing and using raw ultrasonic anemometer data
 
 by Patrizia Favaron.
 
