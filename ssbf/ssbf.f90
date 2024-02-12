@@ -42,9 +42,6 @@ module ssbf
     integer, parameter  :: SSB_FILE_TYPE_WINDRECORDER      = 3
     integer, parameter  :: SSB_FILE_TYPE_SONICLIB          = 4
     
-    ! Directory separator (please don't change; also, please specify Fortran preprocessor with --fpp or /fpp)
-    character   :: cSep
-    
     ! Data types
     
     type HourlySet
@@ -128,7 +125,7 @@ contains
     end function DailyInit
 
 
-    function DailyGet(this, sDataPath, iYear, iMonth, iDay, iFileType) result(iRetCode)
+    function DailyGet(this, sDataPath, iYear, iMonth, iDay, iFileType, cSepIn) result(iRetCode)
         
         ! Routine arguments
         class(DailySet), intent(out)    :: this
@@ -137,19 +134,28 @@ contains
         integer, intent(in)             :: iMonth
         integer, intent(in)             :: iDay
         integer, intent(in)             :: iFileType
+        character, intent(in), optional :: cSepIn
         integer                         :: iRetCode
         
         ! Locals
         integer             :: iErrCode
         integer             :: iHour
         character(len=256)  :: sFileName
+        character           :: cSep
         
         ! Assume success (will falsify on failure)
         iRetCode = 0
 
         ! OS-dependent initializations
-        cSep = '\\'
-        ! Please specify cSep = '/' on Linux and Mac OS/X
+        if(present(cSepIn)) then
+            if(verify(cSepIn, "/\\") /= 0) then
+                cSep = cSepIn
+            else
+                cSep = "/"
+            end if
+        else
+            cSep = '/'
+        end if
 
         ! Pre-assign components
         this % iYear  = int(iYear, kind=2)
@@ -177,8 +183,6 @@ contains
                 write(sFileName, "(a,a,i4.4,2i2.2,'.',i2.2,'.csv')") &
                     trim(sDataPath), cSep, &
                     iYear, iMonth, iDay, iHour
-                
-            case(SSB_FILE_TYPE_WINDRECORDER)
                 
             end select
             
