@@ -2,6 +2,7 @@
 
 by Patrizia Favaron.
 
+
 ## Core motivation
 
 Three-dimensional anemometers can produce large data sets whose permanent archiving is of ancillary, yet paramount, importance in view of dissemination, processing and unanticipated uses.
@@ -10,7 +11,12 @@ The most likely use of data by the micro-meteorological community will be access
 
 For this reason, a sensible archival form should be the simple and "universal", that is, accessible by any language able to get a binary stream of data.
 
-In addition, the reading of data should be reasonably fast.
+In addition, the reading of data should be reasonably fast. In view of this objective the following decisions have been taken:
+- Format is self-describing, that is, information on file size is stored in the file itself so that no re-reading or computation is necessary.
+- Data are stored on daily, instead of hourly, basis: this decreases the number of files in a campaign directory, with benefits in terms of access time on some operating systems.
+- Data are internally organized column-wise.
+
+As interest in eddy covariance and many other processing method is in valid data only, only these should be stored in an SSBF file. To prevent invalid data from entering SSBF files a set of ingest procedures have been implemented, which exclude invalids on read.
 
 ## Relevant acronyms and terminology
 
@@ -20,25 +26,16 @@ In addition, the reading of data should be reasonably fast.
 
 So we can say that specific file "is SSB", while "this specification refers to SSBF". Occasionally the author might use a longer version of the latter by writing or saying something like "this file is encoded in SSB format".
 
-Note from the author: _I don't like specially acronyms, but this one was quite a necessity, given its expansion being really very long and quite annoying; I hope "SSB" and "SSBF" are reasonably easy to remember, and am open to adopt any better idea. Of course I'm aware the acronym SSB overlaps another well-known object in communications engineering, and may then require some disambiguation, maybe a name change: I'm open to it, too_.
-
-## Drawbacks of extant ultrasonic anemometer data formats
-
-Data from three-dimensional ultrasonic anemometers are most often collected in proprietary format files, with typically a hourly organization.
-
-Adoption of a hourly organization, i.e. files containing data collected during a specific hour, is quite a historical heritage: at 10 Hz, 36000 sonic quadruples (u,v,w,t) can be expected in a file: a number manageable enough, and likely to be stored in RAM on most computers from ate Nineties onwards.
-
-The lack of standardization, however, made difficult to share data among users. The textual nature of some of these formats added to this issue, inducing inefficiency in data retrieval and storage.
-
-The SSB format was developed to address these problems: it is a binary format, efficiently accessible in stream mode.
 
 ## Advantages of SSBF
 
-Its _daily_ organization also encourages to deal with phenomena occurring on a time scale longer than one hour, as for example the tendency of airflow to recirculate in breeze regimens, which can be fully appreciated on a daily scale; addressing the study of such more-than-hourly phenomena using hourly files could be (by the author's direct experience) quite exposing to a lot of nitty-gritty code-writing to just arrange data so that hour 'i' really precedes 'i+1' in memory, time which could be used more productively addressing the scientific problem itself.
+The daily organization of SSBF encourages to deal with phenomena occurring on a time scale longer than one hour, as for example the tendency of airflow to recirculate in breeze regimens, which can be fully appreciated on a longer-than-one-hour scale; addressing the study of such more-than-hourly phenomena using hourly files could be cumbersome or error-prone.
 
 In addition, the size of an SSB file is "very small" for today's computers (somewhat less than 9 megabytes for data sampled at 10 Hz), and in the same time "large enough" to allow fast data transfer rates on local and network channels. Also, adopting daily files instead of hourly allow users to deal with 24 time less files, a strong bonus in operating systems placing penalties to large data file counts (as the author knows, Microsoft Windows _was_ prone to this problems in the past; and anyway, anyone who tried to list a some-years data set organized hourly on an FTP connection while counting time to gather children after school knows very well which the consequence of a "many extremely small files" approach means - a little cruelty, imposed by technological constraints in 1990s, but no longer needed in 2024).
 
-## What's inside this repository
+
+## The ssbf.for library
+
 
 In this repository you can find two things:
 
